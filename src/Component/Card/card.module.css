@@ -1,0 +1,19 @@
+/* card.module.css */
+.card {
+  margin-left: 15px;
+  display: flex;
+  flex-direction: row;
+  width: 600px;
+  height: 155px;
+  border-radius: 25px;
+  align-items: center;
+  margin-top: 110px;
+  position: relative;
+  background: url('../../../public/cardbg.jpg') no-repeat center center fixed;
+  background-attachment: scroll, local;
+  background-size: cover;
+   background-position: center;
+            background-repeat: no-repeat;
+          
+
+}
