@@ -1,17 +1,29 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart, ArcElement, Tooltip, Legend } from "chart.js/auto";
+import { Chart, DoughnutController, Tooltip, Legend } from "chart.js/auto";
 import styles from "./CustomChart.module.css";
 
-Chart.register(ArcElement, Tooltip, Legend);
+const plugins = [DoughnutController, Tooltip, Legend];
 
-const CustomizableCard = ({ title, chartData, activePrLabel, sumLabel }) => {
-  const backgroundColors = chartData.datasets[0].backgroundColor;
-  const dataValues = chartData.datasets[0].data;
+interface CustomizableCardProps {
+  title: string;
+  chartData: Chart.ChartData;
+  activePrLabel: string;
+  sumLabel: string;
+}
 
-  const sum = dataValues.reduce((acc, value) => acc + value, 0);
+const CustomizableCard: React.FC<CustomizableCardProps> = ({
+  title,
+  chartData,
+  activePrLabel,
+  sumLabel,
+}) => {
+  const backgroundColors = chartData.datasets?.[0]?.backgroundColor || [];
+  const dataValues = chartData.datasets?.[0]?.data || [];
 
-  const customOptions = {
+  const sum = dataValues.reduce((acc, value) => acc + (value || 0), 0);
+
+  const customOptions: Chart.ChartOptions = {
     plugins: {
       legend: {
         display: false,
@@ -30,6 +42,10 @@ const CustomizableCard = ({ title, chartData, activePrLabel, sumLabel }) => {
       mode: null,
     },
   };
+
+  useEffect(() => {
+    plugins.forEach((plugin) => Chart.register(plugin));
+  }, []);
 
   return (
     <div className={`${styles.card}`}>
@@ -56,9 +72,9 @@ const CustomizableCard = ({ title, chartData, activePrLabel, sumLabel }) => {
               className={styles.chip}
               style={{ backgroundColor: backgroundColors[index] }}
             >
-              {value.toString()}
+              {value?.toString()}
             </div>
-            <div className={styles.labelText}>{chartData.labels[index]}</div>
+            <div className={styles.labelText}>{chartData.labels?.[index]}</div>
           </div>
         ))}
       </div>
@@ -66,13 +82,28 @@ const CustomizableCard = ({ title, chartData, activePrLabel, sumLabel }) => {
   );
 };
 
-const CardContainer = ({ children }) => (
+interface CardContainerProps {
+  children: React.ReactNode;
+}
+
+const CardContainer: React.FC<CardContainerProps> = ({ children }) => (
   <div className={styles.cardContainer}>{children}</div>
 );
-// ... (previous imports)
 
-const App = ({ labels, dataValues, activePrLabel, title }) => {
-  const data1 = {
+interface AppProps {
+  labels?: string[];
+  dataValues?: number[];
+  activePrLabel: string;
+  title: string;
+}
+
+const App: React.FC<AppProps> = ({
+  labels,
+  dataValues,
+  activePrLabel,
+  title,
+}) => {
+  const data1: Chart.ChartData = {
     labels: labels || [
       "New RFQs",
       "Ordered",
@@ -98,16 +129,19 @@ const App = ({ labels, dataValues, activePrLabel, title }) => {
     ],
   };
 
-  const calculateSumLabel = (data) => {
-    const sum = data.datasets[0].data.reduce((acc, value) => acc + value, 0);
+  const calculateSumLabel = (data: Chart.ChartData) => {
+    const sum = data.datasets?.[0]?.data.reduce(
+      (acc: number, value: number) => acc + (value || 0),
+      0
+    );
     return `${sum}`;
   };
 
   return (
     <CardContainer>
       <CustomizableCard
-        chartData={data1}
         title={title}
+        chartData={data1}
         activePrLabel={activePrLabel}
         sumLabel={calculateSumLabel(data1)}
       />
