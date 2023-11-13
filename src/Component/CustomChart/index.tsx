@@ -1,15 +1,24 @@
+"use client"
 import React, { useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
-import { Chart, DoughnutController, Tooltip, Legend } from "chart.js/auto";
+import {
+  DoughnutController,
+  Tooltip,
+  Legend,
+  registerables,
+} from "chart.js/auto";
+import * as Chart from "chart.js/auto";
 import styles from "./CustomChart.module.css";
 
-const plugins = [DoughnutController, Tooltip, Legend];
+const registry = Chart.registry as any;
+
+type DoughnutChartData = Chart.ChartData<"doughnut", number[], unknown>;
 
 interface CustomizableCardProps {
   title: string;
-  chartData: Chart.ChartData;
+  chartData: DoughnutChartData;
   activePrLabel: string;
-  sumLabel: string;
+  sumLabel: number;
 }
 
 const CustomizableCard: React.FC<CustomizableCardProps> = ({
@@ -18,12 +27,19 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
   activePrLabel,
   sumLabel,
 }) => {
-  const backgroundColors = chartData.datasets?.[0]?.backgroundColor || [];
-  const dataValues = chartData.datasets?.[0]?.data || [];
+  const backgroundColors: string[] = Array.isArray(
+    chartData.datasets?.[0]?.backgroundColor
+  )
+    ? chartData.datasets[0].backgroundColor
+    : [chartData.datasets[0]?.backgroundColor || ""];
+  const dataValues: (number | null)[] = (
+    chartData.datasets?.[0]?.data || []
+  ).map((value) => (typeof value === "number" ? value : null));
 
-  const sum = dataValues.reduce((acc, value) => acc + (value || 0), 0);
-
-  const customOptions: Chart.ChartOptions = {
+  const customOptions: {
+    cutout: string;
+    tooltips?: { enabled: boolean };
+  } & Chart.ChartOptions = {
     plugins: {
       legend: {
         display: false,
@@ -39,14 +55,19 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
       enabled: false,
     },
     hover: {
-      mode: null,
+      mode: "nearest",
     },
   };
 
   useEffect(() => {
-    plugins.forEach((plugin) => Chart.register(plugin));
+    // Check if registry is available and has the expected methods
+    if (registry && typeof registry.addControllers === "function") {
+      registry.addControllers(DoughnutController);
+      registry.register(Tooltip, Legend, ...registerables);
+    } else {
+      console.error("Registry not available or missing expected methods.");
+    }
   }, []);
-
   return (
     <div className={`${styles.card}`}>
       <div className={styles.cardContent}>
@@ -74,7 +95,9 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
             >
               {value?.toString()}
             </div>
-            <div className={styles.labelText}>{chartData.labels?.[index]}</div>
+            <div className={styles.labelText}>
+              {(chartData.labels?.[index] as React.ReactNode) || ""}
+            </div>
           </div>
         ))}
       </div>
@@ -95,6 +118,7 @@ interface AppProps {
   dataValues?: number[];
   activePrLabel: string;
   title: string;
+  sumLabel: number;
 }
 
 const App: React.FC<AppProps> = ({
@@ -102,6 +126,7 @@ const App: React.FC<AppProps> = ({
   dataValues,
   activePrLabel,
   title,
+  sumLabel,
 }) => {
   const data1: Chart.ChartData = {
     labels: labels || [
@@ -115,12 +140,12 @@ const App: React.FC<AppProps> = ({
     datasets: [
       {
         label: "# of Votes",
-        data: dataValues || [282, 132, 124, 233, 120, 156],
+        data: dataValues?.map((value) => (value !== null ? value : 0)) || [], // Replace null values with 0
         backgroundColor: [
           "rgba(149, 189, 255, 1)",
           "rgba(248, 229, 164, 1)",
           "rgba(247, 200, 224, 1)",
-          " rgba(140, 242, 242, 1)",
+          "rgba(140, 242, 242, 1)",
           "rgba(255, 192, 179, 1)",
           "rgba(223, 255, 216, 0.8)",
         ],
@@ -129,21 +154,13 @@ const App: React.FC<AppProps> = ({
     ],
   };
 
-  const calculateSumLabel = (data: Chart.ChartData) => {
-    const sum = data.datasets?.[0]?.data.reduce(
-      (acc: number, value: number) => acc + (value || 0),
-      0
-    );
-    return `${sum}`;
-  };
-
   return (
     <CardContainer>
       <CustomizableCard
         title={title}
-        chartData={data1}
+        chartData={data1 as Chart.ChartData<"doughnut", number[], unknown>}
         activePrLabel={activePrLabel}
-        sumLabel={calculateSumLabel(data1)}
+        sumLabel={sumLabel}
       />
     </CardContainer>
   );

@@ -9,16 +9,21 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "chart.js": "^4.4.0",
-    "next": "14.0.1",
+    "chart.js": "^3.7.0",
+    "next": "^14.0.1",
     "react": "^18",
-    "react-chartjs-2": "^5.2.0",
+    "react-chartjs-2": "^3.0.4",
     "react-dom": "^18"
   },
   "devDependencies": {
+    "@types/chart.js": "^2.9.40",
     "@types/node": "^20",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "typescript": "^5"
-  }
+  },
+  "main": "index.js",
+  "repository": "https://github.com/santhoshn-vrize/SIdeWork.git",
+  "author": "SAN327905 <santhoshn641@gmail.com>",
+  "license": "MIT"
 }

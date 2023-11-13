@@ -82,7 +82,7 @@
   .labelText {
     margin-left: 5px;
     font-size: 10px;
-    font-family: 'Poppins', sans-serif;
+   
     font-weight: 500;
     line-height: 15px;
     letter-spacing: 0em;
@@ -134,7 +134,7 @@
   font-size: 12px;
   transform: translateY(-50%);
   font-style:unset;
-   font-family: 'Poppins';
+ 
    left: -1%;
   text-align: center;
   font-weight: 500;
@@ -147,7 +147,7 @@
   transform: translateY(-50%);
   left: -1%;
    text-align: center;
-   font-family: 'Poppins';
+   
     font-weight: 700;
      line-height: 27px;
 }
@@ -163,6 +163,6 @@
   letter-spacing: 0em;
   text-align: left;
   color: #FFFFFF;
-  font-family: 'Poppins';
+  
 }
 
