@@ -1,3 +1,7 @@
+ @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&display=swap');
+
+
+
 
 .card-container {
   display: flex;
@@ -22,7 +26,7 @@
   align-items: center;
   position: relative;
   margin-top: 110px;
-  background: url('../../../public/cardbg.jpg') no-repeat center center fixed;
+  background: url('../../../public/graph-bg.jpg') no-repeat center center fixed;
   background-size: cover;
   background-attachment: scroll, local;
   background-position: center;
@@ -52,6 +56,7 @@
 
 .chart-title {
   margin-bottom: 20px;
+   font-family: 'Poppins';
 }
 
 .labelContainer {
@@ -64,14 +69,10 @@
   grid-auto-rows: minmax(50px, auto);
    grid-column-gap: 60px; 
   height: auto;
+  font-family: Poppins;
 }
 
-.labelItem {
-  display: flex;
-  color: aliceblue;
-  align-items: center;
-  
-}
+
 
 .doughnutChart {
   margin-left: 19px;
@@ -79,15 +80,7 @@
   margin-top: -85px;
 }
 
-  .labelText {
-    margin-left: 5px;
-    font-size: 10px;
-   
-    font-weight: 500;
-    line-height: 15px;
-    letter-spacing: 0em;
-    text-align: left;
-  }
+  
 
 
 .cardContent {
@@ -96,39 +89,58 @@
 }
 
 .chip {
-  width: 20px;
+  width: 23px;
   height: 18px;
-  top: 120.95px;
-  left: 157px;
   padding: 1.95px 7.8px;
   border-radius: 12.19px;
   gap: 9.75px;
   display: inline-flex;
   align-items: center;
-  background-color: #e0e0e0;
-  color: #333;
-  font-size: 14px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  font-family: Poppins;
+}
+
+.chiplabel {
+  font-size: 11px;
   font-weight: 600;
   line-height: 18px;
   letter-spacing: 0em;
-  text-align: left;
-  cursor: pointer;
-  margin-bottom: 5px;
+text-align: center; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  font-family: Poppins;
 }
 
-.chip:hover {
-  background-color: #bdbdbd;
+
+.labelItem {
+  display: flex;
+  color: aliceblue;
+  align-items: center;
+  margin-bottom: 2px;
+  font-family: Poppins;
 }
-
-
-
 
 .label {
   position: relative;
   font-weight: bold;
   color: white;
+  font-family: Poppins;
 }
 
+
+.labelText {
+    margin-left: 5px;
+    font-size: 10px;
+    font-family: Poppins;
+    font-weight: 65px;
+    line-height: 15px;
+    letter-spacing: 0em;
+    text-align: left;
+    color:  #FFFFFF;
+
+  }
 .activePrLabel {
   top: 30%; 
   font-size: 12px;
@@ -139,6 +151,7 @@
   text-align: center;
   font-weight: 500;
   line-height: 18px;
+  font-family: Poppins;
 }
 
 .sumLabel {
@@ -147,22 +160,24 @@
   transform: translateY(-50%);
   left: -1%;
    text-align: center;
-   
-    font-weight: 700;
-     line-height: 27px;
+   font-weight: 700;
+   line-height: 27px;
+   font-family: Poppins;
 }
 
 .titleText {
   position: absolute;
-  top: 15%; 
+  top: 12%; 
   left: 45%;
   transform: translateX(-50%);
+   font-family: Poppins;
   font-size: 12px;
   font-weight: 600; 
-  line-height: 20px;
+  line-height: 18px;
   letter-spacing: 0em;
   text-align: left;
   color: #FFFFFF;
-  
+  width: 110px;
+  margin-bottom: 10px;
 }
 

@@ -27,7 +27,7 @@ const Home = () => {
         dataValues={dataValues}
         activePrLabel={activePrLabel}
         title={title}
-        sumLabel = {sumLabel}
+        sumLabel={sumLabel}
       />
     </>
   );

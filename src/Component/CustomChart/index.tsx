@@ -19,6 +19,7 @@ interface CustomizableCardProps {
   chartData: DoughnutChartData;
   activePrLabel: string;
   sumLabel: number;
+  backgroundColors: string[];
 }
 
 const CustomizableCard: React.FC<CustomizableCardProps> = ({
@@ -26,12 +27,9 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
   chartData,
   activePrLabel,
   sumLabel,
+  backgroundColors,
 }) => {
-  const backgroundColors: string[] = Array.isArray(
-    chartData.datasets?.[0]?.backgroundColor
-  )
-    ? chartData.datasets[0].backgroundColor
-    : [chartData.datasets[0]?.backgroundColor || ""];
+
   const dataValues: (number | null)[] = (
     chartData.datasets?.[0]?.data || []
   ).map((value) => (typeof value === "number" ? value : null));
@@ -60,7 +58,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
   };
 
   useEffect(() => {
-    // Check if registry is available and has the expected methods
+  
     if (registry && typeof registry.addControllers === "function") {
       registry.addControllers(DoughnutController);
       registry.register(Tooltip, Legend, ...registerables);
@@ -88,12 +86,26 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
       </div>
       <div className={styles.labelContainer}>
         {dataValues.map((value, index) => (
-          <div key={index} className={styles.labelItem}>
+          <div className={styles.labelItem} key={index}>
             <div
               className={styles.chip}
               style={{ backgroundColor: backgroundColors[index] }}
             >
-              {value?.toString()}
+              <div className={styles.labelContainer}>
+                <div
+                  className={styles.chiplabel}
+                  style={{
+                    backgroundColor: backgroundColors[index],
+                    color: "#333",
+                    width: "20px",
+                    height: "18px",
+                    fontWeight: "600",
+                  }}
+                >
+                 
+                  {value?.toString()}
+                </div>
+              </div>
             </div>
             <div className={styles.labelText}>
               {(chartData.labels?.[index] as React.ReactNode) || ""}
@@ -128,6 +140,15 @@ const App: React.FC<AppProps> = ({
   title,
   sumLabel,
 }) => {
+  const backgroundColors = [
+    "rgba(149, 189, 255, 1)",
+    "rgba(248, 229, 164, 1)",
+    "rgba(247, 200, 224, 1)",
+    "rgba(140, 242, 242, 1)",
+    "rgba(255, 192, 179, 1)",
+    "rgba(223, 255, 216, 1)",
+  ];
+
   const data1: Chart.ChartData = {
     labels: labels || [
       "New RFQs",
@@ -140,15 +161,8 @@ const App: React.FC<AppProps> = ({
     datasets: [
       {
         label: "# of Votes",
-        data: dataValues?.map((value) => (value !== null ? value : 0)) || [], // Replace null values with 0
-        backgroundColor: [
-          "rgba(149, 189, 255, 1)",
-          "rgba(248, 229, 164, 1)",
-          "rgba(247, 200, 224, 1)",
-          "rgba(140, 242, 242, 1)",
-          "rgba(255, 192, 179, 1)",
-          "rgba(223, 255, 216, 0.8)",
-        ],
+        data: dataValues?.map((value) => (value !== null ? value : 0)) || [],
+        backgroundColor: backgroundColors,
         borderWidth: 0,
       },
     ],
@@ -161,6 +175,7 @@ const App: React.FC<AppProps> = ({
         chartData={data1 as Chart.ChartData<"doughnut", number[], unknown>}
         activePrLabel={activePrLabel}
         sumLabel={sumLabel}
+        backgroundColors={backgroundColors}
       />
     </CardContainer>
   );
