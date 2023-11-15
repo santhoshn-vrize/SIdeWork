@@ -9,6 +9,7 @@ import {
 } from "chart.js/auto";
 import * as Chart from "chart.js/auto";
 
+
 const registry = Chart.registry as any;
 
 type DoughnutChartData = Chart.ChartData<"doughnut", number[], unknown>;
@@ -104,7 +105,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
           <span
             style={{
               position: "absolute",
-              width: "130px",
+              width: "131px",
               top: "15.94px",
               left: "228px",
               transform: "translateX(-50%)",
@@ -136,6 +137,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
             fontSize: "12px",
             textAlign: "center",
           }}
+      
         >
           {activePrLabel}
         </p>
@@ -155,17 +157,22 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
             textAlign: "center",
             lineHeight: "27px",
           }}
+         
         >
           {sumLabel}
         </p>
 
-        <div style={{ width: "160.45px", height: "110.45px" }}>
+        <div
+          style={{ width: "160.45px", height: "110.45px" }}
+       
+        >
           <Doughnut
             data={chartData}
             options={customOptions}
             style={{
-              width: "100% ",
-              height: "100%",
+           
+               width:"100% ",
+               height:"100%",
               marginLeft: "19px",
               marginRight: "30px",
               marginTop: "-105px",
@@ -182,10 +189,11 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
           gridTemplateColumns: "repeat(2, 1fr)",
           gridTemplateRows: "repeat(3, 1fr)",
           gridAutoRows: "minmax(50px, auto)",
-          gridColumnGap: "55px",
+          gridColumnGap: "50px",
           height: "auto",
           fontFamily: "Poppins",
         }}
+       
       >
         {dataValues.map((value, index) => (
           <div
@@ -197,6 +205,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
               marginBottom: "2px",
               fontFamily: "Poppins",
             }}
+       
           >
             <div
               style={{
@@ -212,6 +221,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
                 fontFamily: "Poppins",
                 backgroundColor: backgroundColors[index],
               }}
+             
             >
               <div
                 style={{
@@ -229,6 +239,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
                   width: "22px",
                   height: "20px",
                 }}
+               
               >
                 {value?.toString()}
               </div>
@@ -259,7 +270,7 @@ interface CardContainerProps {
 }
 
 const CardContainer: React.FC<CardContainerProps> = ({ children }) => (
-  <div>{children}</div>
+  <div >{children}</div>
 );
 
 interface AppProps {
@@ -289,13 +300,14 @@ const App: React.FC<AppProps> = ({
   useEffect(() => {
     const linkElement = document.createElement("link");
     linkElement.href = "https://fonts.googleapis.com/css?family=Poppins";
-    linkElement.rel = "stylesheet";
-    document.head.appendChild(linkElement);
+    linkElement.rel = "stylesheet";    
+    document.head.appendChild(linkElement);  
     return () => {
       document.head.removeChild(linkElement);
     };
   }, []);
 
+  
   const data1: Chart.ChartData = {
     labels: labels || [
       "New RFQs",
