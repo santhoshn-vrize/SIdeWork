@@ -3,15 +3,20 @@ import React, { useEffect } from "react";
 import { Doughnut } from "react-chartjs-2";
 import {
   DoughnutController,
-  Tooltip,
-  Legend,
-  registerables,
+  registerables as _registerables,
+  ChartComponent,
 } from "chart.js/auto";
+import { Registry, ChartComponentLike } from "chart.js/auto";
 import * as Chart from "chart.js/auto";
 
-const registry = Chart.registry as any;
-
 type DoughnutChartData = Chart.ChartData<"doughnut", number[], unknown>;
+
+interface ExtendedRegistry extends Registry {
+  register(...controllers: ChartComponentLike[]): void;
+  addControllers(...controllers: ChartComponentLike[]): void;
+}
+
+const registry = Chart.registry as ExtendedRegistry;
 
 interface CustomizableCardProps {
   title: string;
@@ -19,6 +24,7 @@ interface CustomizableCardProps {
   activePrLabel: string;
   sumLabel: number;
   backgroundColors: string[];
+  graphbgurl: string;
 }
 
 const CustomizableCard: React.FC<CustomizableCardProps> = ({
@@ -27,10 +33,11 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
   activePrLabel,
   sumLabel,
   backgroundColors,
+  graphbgurl,
 }) => {
   const dataValues: (number | null)[] = (
     chartData.datasets?.[0]?.data || []
-  ).map((value) => (typeof value === "number" ? value : null));
+  ).map((value: number | null) => (typeof value === "number" ? value : null));
 
   const customOptions: {
     cutout: string;
@@ -57,29 +64,35 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
 
   useEffect(() => {
     if (registry && typeof registry.addControllers === "function") {
-      registry.addControllers(DoughnutController);
-      registry.register(Tooltip, Legend, ...registerables);
-    } else {
-      console.error("Registry not available or missing expected methods.");
+      registry.addControllers(DoughnutController as ChartComponent);
+      return;
+    }
+
+    if (registry && "register" in registry) {
+      const extendedRegistry = registry as ExtendedRegistry;
+      (_registerables as ChartComponent[]).forEach((item) =>
+        extendedRegistry.register(item)
+      );
     }
   }, []);
+
   return (
     <div
       style={{
         width: "449.58px",
         height: "139.46px",
-        top: "45.39px",
+        top: "0px",
         left: "0px",
         borderRadius: "9.75px",
         boxShadow:
           "0px 3.9008703231811523px 19.504350662231445px 0px #00000040",
-        marginLeft: "15px",
+        marginLeft: "0px",
         display: "flex",
         flexDirection: "row",
         alignItems: "center",
         position: "relative",
-        marginTop: "110px",
-        background: "url('./graph-bg.jpg') no-repeat center center fixed",
+        marginTop: "0px",
+        backgroundImage: `url(${graphbgurl})`,
         backgroundSize: "cover",
         backgroundAttachment: "scroll, local",
         backgroundPosition: "center",
@@ -90,7 +103,6 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
         overflow: "hidden",
       }}
     >
-      {/* <div className={styles.cardContent}> */}
       <div
         style={{
           justifyContent: "center",
@@ -115,7 +127,6 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
               letterSpacing: "0em",
               textAlign: "left",
               color: "#FFFFFF",
-
               marginBottom: "10px",
             }}
           >
@@ -129,9 +140,9 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
             fontWeight: "00",
             color: "white",
             fontFamily: "Poppins",
-            width: "44px",
+            width: "100px",
             height: "18px",
-            left: "50px",
+            left: "23px",
             top: "10.5px",
             fontSize: "12px",
             textAlign: "center",
@@ -178,13 +189,14 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
           marginTop: "0px",
           paddingTop: "40px",
           paddingBottom: "0px",
-          display: "grid",
-          gridTemplateColumns: "repeat(2, 1fr)",
-          gridTemplateRows: "repeat(3, 1fr)",
-          gridAutoRows: "minmax(50px, auto)",
-          gridColumnGap: "55px",
+
           height: "auto",
           fontFamily: "Poppins",
+          display: "flex",
+          flexDirection: "column",
+          flexWrap: "wrap",
+          maxHeight: "110px",
+          gap: "0px 10px",
         }}
       >
         {dataValues.map((value, index) => (
@@ -243,6 +255,7 @@ const CustomizableCard: React.FC<CustomizableCardProps> = ({
                 letterSpacing: "0em",
                 textAlign: "left",
                 color: "#FFFFFF",
+                marginTop: "-5px",
               }}
             >
               {(chartData.labels?.[index] as React.ReactNode) || ""}
@@ -268,14 +281,16 @@ interface AppProps {
   activePrLabel: string;
   title: string;
   sumLabel: number;
+  graphbgurl: string;
 }
 
-const App: React.FC<AppProps> = ({
+const CustomGraph: React.FC<AppProps & { graphbgurl: string }> = ({
   labels,
   dataValues,
   activePrLabel,
   title,
   sumLabel,
+  graphbgurl,
 }) => {
   const backgroundColors = [
     "rgba(149, 189, 255, 1)",
@@ -291,6 +306,7 @@ const App: React.FC<AppProps> = ({
     linkElement.href = "https://fonts.googleapis.com/css?family=Poppins";
     linkElement.rel = "stylesheet";
     document.head.appendChild(linkElement);
+
     return () => {
       document.head.removeChild(linkElement);
     };
@@ -323,9 +339,10 @@ const App: React.FC<AppProps> = ({
         activePrLabel={activePrLabel}
         sumLabel={sumLabel}
         backgroundColors={backgroundColors}
+        graphbgurl={graphbgurl}
       />
     </CardContainer>
   );
 };
 
-export default App;
+export default CustomGraph;

@@ -1,44 +1,46 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "next/font/google";
+// import { Link } from 'next/link';
+// TODO explore Link component here is crashing the page
+"use client";
+import React from "react";
+import CustomGraph from "@/Component/CustomGraph";
+import Chart from "../Component/Chart";
+const graphbgurl =
+  "https://dev-p2p-synergy.s3.ap-south-1.amazonaws.com/chartbgimage+3.svg"; //default URL
 
-import GraphChart from "../Component/CustomChart";
-import { Doughnut, Chart } from "react-chartjs-2";
-// import Graph from "../Component/Chart"
-const inter = Inter({ subsets: ["latin"] });
-
-const Home = () => {
+export default function Home() {
   const labels = [
     "New RFQs",
+    "Acknowledged RFQs",
     "Ordered",
     "Quoted RFQs",
     "Order Lost",
-    "Declined RFQs",
+
     "Cancelled",
   ]; // default label
-  const dataValues = [282, 132, 124, 233, 120, 156]; // default values
-  const activePrLabel = "# RFQs"; // default value
+  const dataValues = [282, 132, 124, 233, 156]; // default values
+  const activePrLabel = "# InvoiceRFQs"; // default value
   const title = "Summary of RFQs"; // default value
   const sumLabel = 747; // default value
-  return (
-    <>
-      <GraphChart
-        labels={labels}
-        dataValues={dataValues}
-        activePrLabel={activePrLabel}
-        title={title}
-        sumLabel={sumLabel}
-      />
-      {/* <Graph
-        labels={labels}
-        dataValues={dataValues}
-        activePrLabel={activePrLabel}
-        title={title}
-        sumLabel={sumLabel}
-      /> */}
-      
-    </>
-  );
-};
 
-export default Home;
+  return (
+    <div>
+      <Chart
+        labels={labels}
+        dataValues={dataValues}
+        activePrLabel={activePrLabel}
+        title={title}
+        sumLabel={sumLabel}
+        graphbgurl={graphbgurl}
+      />
+      {/* <CustomGraph
+        labels={labels}
+        dataValues={dataValues}
+        activePrLabel={activePrLabel}
+        title={title}
+        sumLabel={sumLabel}
+        graphbgurl={graphbgurl}
+      /> */}
+      {/* <Link href="/en/quote-requests">Quote Requests</Link> */}
+    </div>
+  );
+}
