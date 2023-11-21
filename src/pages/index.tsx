@@ -32,6 +32,30 @@ export default function Home() {
         sumLabel={sumLabel}
         graphbgurl={graphbgurl}
       />
+       <Chart
+        labels={labels}
+        dataValues={dataValues}
+        activePrLabel={activePrLabel}
+        title={title}
+        sumLabel={sumLabel}
+        graphbgurl={graphbgurl}
+      />
+       <Chart
+        labels={labels}
+        dataValues={dataValues}
+        activePrLabel={activePrLabel}
+        title={title}
+        sumLabel={sumLabel}
+        graphbgurl={graphbgurl}
+      />
+       <Chart
+        labels={labels}
+        dataValues={dataValues}
+        activePrLabel={activePrLabel}
+        title={title}
+        sumLabel={sumLabel}
+        graphbgurl={graphbgurl}
+      />
       {/* <CustomGraph
         labels={labels}
         dataValues={dataValues}
