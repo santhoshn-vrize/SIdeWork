@@ -358,22 +358,7 @@ const CustomGraph: React.FC<AppProps & { graphbgurl: string }> = ({
         backgroundColors={backgroundColors}
         graphbgurl={graphbgurl}
       />
-      <CustomizableCard
-        title={title}
-        chartData={data1 as Chart.ChartData<"doughnut", number[], unknown>}
-        activePrLabel={activePrLabel}
-        sumLabel={sumLabel}
-        backgroundColors={backgroundColors}
-        graphbgurl={graphbgurl}
-      />
-      <CustomizableCard
-        title={title}
-        chartData={data1 as Chart.ChartData<"doughnut", number[], unknown>}
-        activePrLabel={activePrLabel}
-        sumLabel={sumLabel}
-        backgroundColors={backgroundColors}
-        graphbgurl={graphbgurl}
-      />
+     
     </CardContainer>
   );
 };
